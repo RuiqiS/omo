@@ -6,6 +6,12 @@ const Discord = require('discord.js')
     })
     ,prefix = process.env.PREFIX;
 
+client.on('ready', () => {
+    console.log(`Logged in as ${client.user.tag}`)
+    client.user.setActivity('in the kitchen')
+    client.user.setStatus('dnd')
+})
+
 client.on('error', e => {
     console.error(e)
 });
@@ -33,7 +39,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed1 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Kick || ${user.user.tag}`)
@@ -45,7 +51,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.kick(reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed1))
         }
     } else if (command === 'ban') {
         if (!msg.member.hasPermission('BAN_MEMBERS')) {
@@ -55,7 +61,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed2 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Ban || ${user.user.tag}`)
@@ -67,7 +73,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.ban(reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed2))
         }
     } else if (command === 'mute') {
         if (!msg.member.hasPermission('MANAGE_ROLES')) {
@@ -79,7 +85,7 @@ client.on('message', async msg => {
                 ,time = args[1]
                 ,reason = args.slice(msg.mentions.members.first.length + time.length).join(' ')
                 ,muterole = msg.guild.roles.find('name', 'Muted')
-                ,embed = new Discord.RichEmbed()
+                ,embed3 = new Discord.RichEmbed()
                     .setColor('CCCC00')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Mute || ${user.user.tag}`)
@@ -90,7 +96,7 @@ client.on('message', async msg => {
                     .setImage(process.env.IMAGE)
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
-                ,embed1 = new Discord.RichEmbed()
+                ,embed4 = new Discord.RichEmbed()
                     .setColor('00FFFF')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Unmute || ${user.user.tag}`)
@@ -105,8 +111,8 @@ client.on('message', async msg => {
                     return msg.channel.send(`Correct usage: \`${prefix}mute <user> <time(seconds)> [reason]\``);
                 }
                 user.addRole(muterole, `Requested by ${msg.author.tag}`)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
-                setTimeout(() => {user.removeRole(muterole, 'Mute time up') && client.channels.get(process.env.MODLOG_CHANNEL).send(embed1)}, time * 1000)
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed3))
+                setTimeout(() => {user.removeRole(muterole, 'Mute time up') && client.channels.get(process.env.MODLOG_CHANNEL).send(embed4)}, time * 1000)
         }
     } else if (command === 'unmute') {
         if (!msg.member.hasPermission('MANAGE_ROLES')) {
@@ -117,7 +123,7 @@ client.on('message', async msg => {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
                 ,muterole = msg.guild.roles.find('name', 'Muted')
-                ,embed = new Discord.RichEmbed()
+                ,embed5 = new Discord.RichEmbed()
                     .setColor('00FFFF')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Unmute || ${user.user.tag}`)
@@ -129,7 +135,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.removeRole(muterole, `Requested by ${msg.author.tag}`)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed5))
             }
     } else if (command === 'softban') {
         if (!msg.member.hasPermission('BAN_MEMBERS')) {
@@ -139,7 +145,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed6 = new Discord.RichEmbed()
                     .setColor('000000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Softban || ${user.user.tag}`)
@@ -152,7 +158,7 @@ client.on('message', async msg => {
                     .setTimestamp()
                 user.ban(`Requested by: ${msg.author.tag}`, 7)
                 .then(msg.guild.unban(user.user.id, reason))
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed6))
             }
     } else if (command === 'unban') {
         if (!msg.member.hasPermission('BAN_MEMBERS')) {
@@ -162,7 +168,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.users.first()
                 ,reason = args.slice(msg.mentions.users.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed7 = new Discord.RichEmbed()
                     .setColor('00FF00')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Unban || ${user.user.tag}`)
@@ -174,7 +180,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 msg.guild.unban(user.user.id, reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed7))
             }
     } else if (command === 'tempban') {
         if (!msg.member.hasPermission('BAN_MEMBERS')) {
@@ -184,7 +190,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.users.first()
                 ,reason = args.slice(msg.mentions.users.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed8 = new Discord.RichEmbed()
                     .setColor('CC6600')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Tempban || ${user.user.tag}`)
@@ -195,7 +201,7 @@ client.on('message', async msg => {
                     .setImage(process.env.IMAGE)
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
-                ,embed = new Discord.RichEmbed()
+                ,embed9 = new Discord.RichEmbed()
                     .setColor('00FF00')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`Unban || ${user.user.tag}`)
@@ -210,8 +216,8 @@ client.on('message', async msg => {
                     return msg.channel.send(`Correct usage: \`${prefix}tempban <user> <time(days)> [reason]\``);
                 }
                 user.ban(reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
-                setTimeout(() => {msg.guild.unban(user.id, 'Tempban time up') && client.channels.get(process.env.MODLOG_CHANNEL).send(embed1)}, time * 86400000)
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed8))
+                setTimeout(() => {msg.guild.unban(user.id, 'Tempban time up') && client.channels.get(process.env.MODLOG_CHANNEL).send(embed9)}, time * 86400000)
             }
     } else if (command === 'deafen') {
         if (!msg.member.hasPermission('DEAFEN_MEMBERS')) {
@@ -221,7 +227,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed10 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`User Deafened || ${user.user.tag}`)
@@ -233,7 +239,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.setDeaf(true, reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed10))
         }
     } else if (command === 'voicemute') {
         if (!msg.member.hasPermission('MUTE_MEMBERS')) {
@@ -243,7 +249,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed11 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`User Voice muted || ${user.user.tag}`)
@@ -255,7 +261,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.setMute(true, reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed11))
         }
     } else if (command === 'undeafen') {
         if (!msg.member.hasPermission('DEAFEN_MEMBERS')) {
@@ -265,7 +271,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed12 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`User Undeafened || ${user.user.tag}`)
@@ -277,7 +283,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.setDeaf(false, reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed12))
         }
     } else if (command === 'voiceunmute') {
         if (!msg.member.hasPermission('MUTE_MEMBERS')) {
@@ -287,7 +293,7 @@ client.on('message', async msg => {
         } else {
             const user = msg.mentions.members.first()
                 ,reason = args.slice(msg.mentions.members.first.length).join(' ')
-                ,embed = new Discord.RichEmbed()
+                ,embed13 = new Discord.RichEmbed()
                     .setColor('FF0000')
                     .setAuthor(msg.author.tag, msg.author.displayAvatarURL)
                     .setTitle(`User Voice Unmuted || ${user.user.tag}`)
@@ -299,7 +305,7 @@ client.on('message', async msg => {
                     .setFooter(client.user.tag, client.user.avatarURL)
                     .setTimestamp()
                 user.setDeaf(false, reason)
-                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed))
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed13))
         }
     } else if (command === 'purge') {
         const deleteCount = parseInt(args[0], 10)
@@ -310,7 +316,7 @@ client.on('message', async msg => {
         msg.channel.bulkDelete(fetched)
             .catch(e => msg.channel.send(`Could not delete messages || Error: \`${e}\``))
     } else if (command === 'help') {
-        const embed = new Discord.RichEmbed()
+        const embed15 = new Discord.RichEmbed()
             .setAuthor('omo - a bot created by <@260594090255712258>', client.user.displayAvatarURL)
             .setColor('FFFFFF')
             .setTitle(`List of Available Commands ~ `)
@@ -328,12 +334,8 @@ client.on('message', async msg => {
             .addField(`${prefix}tempban`, `Bans a user, but only temporarily || ${prefix}tempban <user> <time(days)> [reason]`)
             .addField(`${prefix}softban`, `Softbans a user || ${prefix}softban <user> [reason]`)
             .addField('What is softban?', 'Softban is banning a user, and deleting 7 days worth of messages from that user in the process, then unbanning them')
-        msg.channel.send(embed)
+        msg.channel.send(embed15)
     }
 })
 
-client.login(process.env.TOKEN).then(
-    console.log(`[READY] Logged in as ${client.user.tag}`),
-    client.user.setActivity('in the fridge'),
-    client.user.setStatus('dnd')
-)
+client.login(process.env.TOKEN)

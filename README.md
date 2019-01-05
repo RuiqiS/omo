@@ -36,3 +36,5 @@ PREFIX=botprefix
 
 ### I just want to see how it works!
 You can join our [home server](https://discord.gg/wjbHAYG) and watch @omo#8447
+
+If you find out about an issue with the bot, or need help setting it up, feel free to start an issue or pull request
