@@ -317,7 +317,7 @@ client.on('message', async msg => {
             .catch(e => msg.channel.send(`Could not delete messages || Error: \`${e}\``))
     } else if (command === 'help') {
         const embed15 = new Discord.RichEmbed()
-            .setAuthor('omo - a bot created by <@260594090255712258>', client.user.displayAvatarURL)
+            .setAuthor('omo - a bot created by @Rain | (-_-) zzz#0004', client.user.displayAvatarURL)
             .setColor('FFFFFF')
             .setTitle(`List of Available Commands ~ `)
             .setDescription(`\`Note:\` With the exception of ${prefix}ping, these commands are designed for moderators (They need server permissions to be executed)`)
