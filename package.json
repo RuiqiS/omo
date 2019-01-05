@@ -1,0 +1,23 @@
+{
+  "name": "omo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "omo.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RuiqiS/omo.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RuiqiS/omo/issues"
+  },
+  "homepage": "https://github.com/RuiqiS/omo#readme",
+  "dependencies": {
+    "discord.js": "^11.4.2",
+    "dotenv": "^6.2.0"
+  }
+}
