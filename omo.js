@@ -4,7 +4,9 @@ const Discord = require('discord.js')
         disableEveryone: true,
         disabledEvents: ['TYPING_START']
     })
-    ,prefix = process.env.PREFIX;
+    ,prefix = process.env.PREFIX
+    ,Canvas = require('canvas')
+    ,snekfetch = require('snekfetch');
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
@@ -15,6 +17,13 @@ client.on('ready', () => {
 client.on('error', e => {
     console.error(e)
 });
+
+client.on('guildMemberAdd', member => {
+    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL);
+    if (!memberchannel) return;
+
+    memberchannel.send('Welcome')
+})
 
 client.on('message', async msg => {
     if (!msg.content.startsWith(prefix) || msg.author.bot || msg.channel.type === 'dm') return;

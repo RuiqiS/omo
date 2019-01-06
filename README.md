@@ -26,11 +26,14 @@ Make sure you have [node.js >= v6.0.0](http://nodejs.org) and [git](https://git-
 
 (Ignore the Procfile)
 
+You will also need a role named "Muted"
+
 ### .env
 ```
 TOKEN=tokenwithoutquotationmarksspacesoranything
 EMBED_IMAGE=imagelinkforembeds
 MOGLOG_CHANNEL=modlogchannelid
+MEMBERLOG_CHANNEL=memberlogchannelid
 PREFIX=botprefix
 ```
 
