@@ -5,8 +5,10 @@ const Discord = require('discord.js')
         disabledEvents: ['TYPING_START']
     })
     ,prefix = process.env.PREFIX
-    ,Canvas = require('canvas')
-    ,snekfetch = require('snekfetch');
+    ,path = require('path')
+    ,{ createCanvas, registerFont } = require('canvas')
+    ,pool = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ23456789'.split('');
+registerFont(path.join(__dirname, 'captcha', 'Captcha.ttf'), { family: 'Captcha' });
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}`)
@@ -18,17 +20,66 @@ client.on('error', e => {
     console.error(e)
 });
 
+
+
 client.on('guildMemberAdd', member => {
     const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL);
     if (!memberchannel) return;
 
-    memberchannel.send('Welcome')
+    const addmemberdata = [];
+    addmemberdata.push(`<:useradd:531579355009384468> | __**User joined**__`)
+    addmemberdata.push(`\`Tag:\` ${member.user.tag} || \`ID:\` ${member.user.id}`)
+    addmemberdata.push(`\`Account Created:\` ${member.user.createdAt}`)
+    memberchannel.send(addmemberdata, { split: true })
+})
+
+client.on('guildMemberRemove', member => {
+    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL);
+    if (!memberchannel) return;
+
+    const remmemberdata = [];
+    remmemberdata.push(`<:userrem:531579355026161674> | __**User left**__`)
+    remmemberdata.push(`\`Tag:\` ${member.user.tag} || \`ID:\` ${member.user.id}`)
+    remmemberdata.push(`\`Joined At:\` ${member.joinedAt}`)
+    memberchannel.send(remmemberdata, { split: true })
 })
 
 client.on('message', async msg => {
     if (!msg.content.startsWith(prefix) || msg.author.bot || msg.channel.type === 'dm') return;
     const args = msg.content.slice(prefix.length).split(' ')
         ,command = args.shift().toLowerCase();
+    if (command === 'verify' && msg.channel.id === process.env.VERIFYCHANNEL) {
+        msg.delete()
+        const canvas = createCanvas(125, 32);
+		const ctx = canvas.getContext('2d');
+        const text = randomText(5);
+        const Humanrole = msg.guild.roles.find("name", "Humans")
+		ctx.fillStyle = 'white';
+		ctx.fillRect(0, 0, canvas.width, canvas.height);
+		ctx.beginPath();
+		ctx.strokeStyle = '#0088cc';
+		ctx.font = '26px Captcha';
+		ctx.rotate(-0.05);
+		ctx.strokeText(text, 15, 26);
+		await msg.channel.send(
+			'**You have 15 seconds, what does the captcha say?**',
+			{ files: [{ attachment: canvas.toBuffer(), name: 'captcha-quiz.png' }] }
+		);
+		const msgs = await msg.channel.awaitMessages(res => res.author.id === msg.author.id, {
+			max: 1,
+			time: 30000
+		});
+		if (!msgs.size) return msg.channel.send(`Sorry, time is up! It was ${text}.`);
+		if (msgs.first().content !== text) return msg.reply(`Nope, sorry, it's ${text}. Use \`omo!verify\` again to try again, or ping a staff to manually give you the role`);
+        return msg.channel.send('Verification Successful')
+            .then(msg.member.addRole(Humanrole))
+
+        function randomText(len) {
+            const result = [];
+            for (let i = 0; i < len; i++) result.push(pool[Math.floor(Math.random() * pool.length)]);
+            return result.join('');
+        }
+    }
     if (command === 'ping') {
         let start = Date.now(); msg.channel.send('Pinging...').then(msg => {
             let diff = (Date.now() - start)
