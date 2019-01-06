@@ -71,7 +71,7 @@ client.on('message', async msg => {
 		});
 		if (!msgs.size) return msg.channel.send(`Sorry, time is up! It was ${text}.`);
 		if (msgs.first().content !== text) return msg.reply(`Nope, sorry, it's ${text}. Use \`omo!verify\` again to try again, or ping a staff to manually give you the role`);
-        return msg.channel.send('Verification Successful')
+        return msg.channel.send(`Verification for ${msg.author.username} Successful`)
             .then(msg.member.addRole(Humanrole))
 
         function randomText(len) {
