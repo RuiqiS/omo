@@ -58,7 +58,7 @@ client.on('message', async msg => {
         const canvas = createCanvas(125, 32);
 		const ctx = canvas.getContext('2d');
         const text = randomText(5);
-        const Humanrole = msg.guild.roles.find("name", "Humans")
+        const Humanrole = msg.guild.roles.find("name", "Users")
 		ctx.fillStyle = 'white';
 		ctx.fillRect(0, 0, canvas.width, canvas.height);
 		ctx.beginPath();
