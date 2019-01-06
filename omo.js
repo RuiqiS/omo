@@ -31,6 +31,7 @@ client.on('guildMemberAdd', member => {
     addmemberdata.push(`\`Tag:\` ${member.user.tag} || \`ID:\` ${member.user.id}`)
     addmemberdata.push(`\`Account Created:\` ${member.user.createdAt}`)
     memberchannel.send(addmemberdata, { split: true })
+    member.send(`Welcome to **${member.guild.name}**, ${member.user.username}! Please read <#531568914400935956> and use \`omo!verify\` in <#531586476832587787> to begin!`)
 })
 
 client.on('guildMemberRemove', member => {
