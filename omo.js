@@ -46,6 +46,7 @@ client.on('guildMemberRemove', member => {
 })
 
 client.on('message', async msg => {
+    if (msg.content.startsWith('https://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discordapp.com/invite') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('https://discordapp.com/invite') && msg.channel.name !== 'self-promotion')
     if (!msg.content.startsWith(prefix) || msg.author.bot || msg.channel.type === 'dm') return;
     const args = msg.content.slice(prefix.length).split(' ')
         ,command = args.shift().toLowerCase();
