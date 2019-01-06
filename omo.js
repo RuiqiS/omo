@@ -63,7 +63,7 @@ client.on('message', async msg => {
 		ctx.rotate(-0.05);
 		ctx.strokeText(text, 15, 26);
 		await msg.channel.send(
-			'**You have 15 seconds, what does the captcha say?**',
+			`**${msg.author.username}, You have 15 seconds, what does the captcha say?**`,
 			{ files: [{ attachment: canvas.toBuffer(), name: 'captcha-quiz.png' }] }
 		);
 		const msgs = await msg.channel.awaitMessages(res => res.author.id === msg.author.id, {
