@@ -20,10 +20,19 @@ client.on('error', e => {
     console.error(e)
 });
 
+const homeserver = client.guilds.get(process.env.HOMESERVER)
+var usersEval = 0;
+const guildMembers = homeserver.members.array();
+for(var i = 0; i < guildMembers.length; i++) {
+    if (guildMembers[i].user.bot) {
+        usersEval++;
+    }
+}
 
 
 client.on('guildMemberAdd', member => {
-    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL);
+    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL)
+        ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL);
     if (!memberchannel) return;
 
     const addmemberdata = [];
@@ -32,6 +41,7 @@ client.on('guildMemberAdd', member => {
     addmemberdata.push(`\`Account Created:\` ${member.user.createdAt}`)
     memberchannel.send(addmemberdata, { split: true })
     member.send(`Welcome to **${member.guild.name}**, ${member.user.username}! Please read <#531568914400935956> and use \`omo!verify\` in <#531586476832587787> to begin!`)
+    countchannel.setName(`User Count (Not Bots): ${usersEval}`)
 })
 
 client.on('guildMemberRemove', member => {
@@ -43,6 +53,7 @@ client.on('guildMemberRemove', member => {
     remmemberdata.push(`\`Tag:\` ${member.user.tag} || \`ID:\` ${member.user.id}`)
     remmemberdata.push(`\`Joined At:\` ${member.joinedAt}`)
     memberchannel.send(remmemberdata, { split: true })
+    countchannel.setName(`User Count (Not Bots): ${usersEval}`)
 })
 
 client.on('message', async msg => {
