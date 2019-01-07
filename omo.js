@@ -37,7 +37,8 @@ client.on('guildMemberAdd', member => {
 })
 
 client.on('guildMemberRemove', member => {
-    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL);
+    const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL)
+    ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL);
     if (!memberchannel) return;
 
     const remmemberdata = [];
