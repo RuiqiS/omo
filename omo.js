@@ -48,6 +48,41 @@ client.on('guildMemberRemove', member => {
 })
 
 client.on('message', async msg => {
+    let filter = mssg => {
+        return mssg.content.toLowerCase() == msg.content.toLowerCase() && 
+            mssg.author.id == msg.author.id;
+    }
+    msg.channel.awaitMessages(filter, {
+        maxMatches: 4,
+        time: 15 * 1000
+    }).then(() => {
+        const muterole = msg.guild.roles.find('name', 'Muted')
+            ,embed16 = new Discord.RichEmbed()
+                    .setColor('CCCC00')
+                    .setAuthor(client.user.tag, client.user.displayAvatarURL)
+                    .setTitle(`Mute || ${user.user.tag}`)
+                    .setDescription(`Time: 30 minutes`)
+                    .addField('User', `<@${user.id}>`, true)
+                    .addField('Staff', `<@${msg.author.id}>`, true)
+                    .addField('Reason', `\`omo automod || Spam Detected\``)
+                    .setImage(process.env.IMAGE)
+                    .setFooter(client.user.tag, client.user.avatarURL)
+                    .setTimestamp()
+                ,embed17 = new Discord.RichEmbed()
+                    .setColor('00FFFF')
+                    .setAuthor(client.user.tag, client.user.displayAvatarURL)
+                    .setTitle(`Unmute || ${user.user.tag}`)
+                    .setDescription(`ID: ${user.id}`)
+                    .addField('User', `<@${user.id}>`, true)
+                    .addField('Staff', `<@${msg.author.id}>`, true)
+                    .addField('Reason', 'omo automod || Time up')
+                    .setImage(process.env.IMAGE)
+                    .setFooter(client.user.tag, client.user.avatarURL)
+                    .setTimestamp()
+                user.addRole(muterole, `Requested by ${msg.author.tag}`)
+                .then(client.channels.get(process.env.MODLOG_CHANNEL).send(embed16))
+                setTimeout(() => {user.removeRole(muterole, 'Mute time up') && client.channels.get(process.env.MODLOG_CHANNEL).send(embed17)}, 1800 * 1000)
+        });
     if (msg.content.startsWith('https://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discordapp.com/invite') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('https://discordapp.com/invite') && msg.channel.name !== 'self-promotion') {
         msg.delete()
         msg.channel.send(`⛔ || <@!${msg.author.id}>, **Please refrain from posting invites!** That's what <#531600766687772692> is for!!`)
