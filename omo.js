@@ -22,7 +22,7 @@ client.on('error', e => {
 
 client.on('guildMemberAdd', member => {
     const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL)
-        ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL);
+        ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL)
     if (!memberchannel) return;
 
     const addmemberdata = [];
@@ -36,7 +36,7 @@ client.on('guildMemberAdd', member => {
 
 client.on('guildMemberRemove', member => {
     const memberchannel = member.guild.channels.get(process.env.MEMBERLOG_CHANNEL)
-    ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL);
+        ,countchannel = member.guild.channels.get(process.env.COUNTCHANNEL)
     if (!memberchannel) return;
 
     const remmemberdata = [];
