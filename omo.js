@@ -77,7 +77,7 @@ client.on('message', async msg => {
 			time: 30000
 		});
 		if (!msgs.size) return msg.channel.send(`Sorry, time is up! It was ${text}.`);
-		if (msgs.first().content.toLowerCase() !== text.toLowerCase()) return msg.reply(`Nope, sorry, it's ${text}. Use \`omo!verify\` again to try again, or ping a staff to manually give you the role`);
+		if (msgs.first().content.toUpperCase() !== text.toUpperCase()) return msg.reply(`Nope, sorry, it's ${text}. Use \`omo!verify\` again to try again, or ping a staff to manually give you the role`);
         return msg.channel.send(`Verification for ${msg.author.username} Successful`)
             .then(msg.member.addRole(Humanrole))
 
