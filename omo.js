@@ -30,7 +30,7 @@ client.on('guildMemberAdd', member => {
     addmemberdata.push(`\`Tag:\` ${member.user.tag} || \`ID:\` ${member.user.id}`)
     addmemberdata.push(`\`Account Created:\` ${member.user.createdAt}`)
     memberchannel.send(addmemberdata, { split: true })
-    member.send(`Welcome to **${member.guild.name}**, ${member.user.username}! Please read <#531568914400935956> and use \`omo!verify\` in <#531586476832587787> to begin!`)
+    member.send(`Welcome to **${member.guild.name}**, ${member.user.username}! Please read <#531568914400935956> and use \`omo!verify\` in <#531586476832587787> to begin! Enjoy your stay at our server! 😊`)
     countchannel.setName(`User Count: ${member.guild.memberCount}`)
 })
 
@@ -48,11 +48,6 @@ client.on('guildMemberRemove', member => {
 })
 
 client.on('message', async msg => {
-    if (msg.content.startsWith('<a:') && msg.author.id === '303181446481444864') {
-        msg.delete()
-        msg.channel.send('<@303181446481444864>, No animated emotes. Because you\'re Simiao')
-            .then(m => m.delete(10000))
-    }
     if (msg.content.startsWith('https://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discordapp.com/invite') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('http://discord.gg') && msg.channel.name !== 'self-promotion' || msg.content.startsWith('https://discordapp.com/invite') && msg.channel.name !== 'self-promotion') {
         msg.delete()
         msg.channel.send(`⛔ || <@!${msg.author.id}>, **Please refrain from posting invites!** That's what <#531600766687772692> is for!!`)
